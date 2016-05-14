@@ -1,4 +1,37 @@
+# This circle.yml is heavily inspired from the guide at
+# https://circleci.com/docs/continuous-deployment-with-google-container-engine/
 machine:
   node:
     version: 5.7.0
-
+  environment:
+    GCLOUD_PROJECT: kbh-billeder
+    GCLOUD_CLUSTER: kbh-billeder-staging-cluster
+    GCLOUD_COMPUTE_ZONE: europe-west1-b
+    GCLOUD: sudo /opt/google-cloud-sdk/bin/gcloud
+  services:
+    - docker
+dependencies:
+  pre:
+    # Upgrading the gcloud command and installing kubectl
+    - $GCLOUD --quiet components update
+    - $GCLOUD --quiet components update kubectl
+    # Decode the gcloud service account key and authenticate gcloud
+    - echo $GCLOUD_SERVICE_KEY | base64 --decode > ${HOME}/gcloud-service-key.json
+    - $GCLOUD auth activate-service-account --key-file ${HOME}/gcloud-service-key.json
+    # Setup gcloud configuration
+    - $GCLOUD config set project $GCLOUD_PROJECT
+    - $GCLOUD config set compute/zone $GCLOUD_COMPUTE_ZONE
+    # Get the credentials for the cluster
+    - $GCLOUD container clusters get-credentials $GCLOUD_CLUSTER
+  override:
+    - echo "Build scripts should be run here ..."
+  post:
+    # Build the docker image using the current directory as context
+    - sudo docker build -t eu.gcr.io/${GCLOUD_PROJECT}/frontend:$CIRCLE_SHA1 .
+    # Using a separate tag command until Docker 1.10 is available on CircleCI, then we can use two tags in the build command above
+    - sudo docker tag eu.gcr.io/${GCLOUD_PROJECT}/frontend:$CIRCLE_SHA1 eu.gcr.io/${GCLOUD_PROJECT}/frontend:latest
+deployment:
+  staging:
+    branch: master
+    commands:
+      - . ./deployment/staging.sh
