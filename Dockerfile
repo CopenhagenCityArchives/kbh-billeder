@@ -1,5 +1,6 @@
 FROM node:6.1
-RUN npm install
+ENV NODE_ENV beta
 COPY . /tmp/
 WORKDIR /tmp/
+RUN npm install --silent
 CMD node server.js
