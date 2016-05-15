@@ -9,7 +9,7 @@ machine:
   services:
     - docker
 dependencies:
-  pre:
+  override:
     # Upgrading the gcloud command and installing kubectl
     - $GCLOUD --quiet components update
     - $GCLOUD --quiet components update kubectl
