@@ -22,7 +22,7 @@ dependencies:
     # Get the credentials for the cluster
     - $GCLOUD container clusters get-credentials $GCLOUD_CLUSTER
     # Build the docker image using the current directory as context
-    - sudo docker build --no-cache -t eu.gcr.io/${GCLOUD_PROJECT}/frontend:$CIRCLE_SHA1 .
+    - sudo docker build -t eu.gcr.io/${GCLOUD_PROJECT}/frontend:$CIRCLE_SHA1 .
     # Using a separate tag command until Docker 1.10 is available on CircleCI, then we can use two tags in the build command above
     - sudo docker tag eu.gcr.io/${GCLOUD_PROJECT}/frontend:$CIRCLE_SHA1 eu.gcr.io/${GCLOUD_PROJECT}/frontend:latest
 test:
