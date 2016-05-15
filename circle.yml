@@ -23,6 +23,8 @@ dependencies:
     - $GCLOUD config set compute/zone $GCLOUD_COMPUTE_ZONE
     # Get the credentials for the cluster
     - $GCLOUD container clusters get-credentials $GCLOUD_CLUSTER
+    # Run npm instal - consider moving this into the building of the container.
+    - npm install
     # Build the docker image using the current directory as context
     - sudo docker build --no-cache -t eu.gcr.io/${GCLOUD_PROJECT}/frontend:$CIRCLE_SHA1 .
     # Using a separate tag command until Docker 1.10 is available on CircleCI, then we can use two tags in the build command above
