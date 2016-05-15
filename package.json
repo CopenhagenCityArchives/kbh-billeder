@@ -21,6 +21,7 @@
   "dependencies": {
     "collections-online": "git+https://github.com/collections-online/collections-online.git",
     "dotenv": "^2.0.0",
+    "express": "^4.13.4",
     "lodash": "^4.12.0"
   }
 }
