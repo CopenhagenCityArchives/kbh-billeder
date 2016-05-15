@@ -1,8 +1,6 @@
 # This circle.yml is heavily inspired from the guide at
 # https://circleci.com/docs/continuous-deployment-with-google-container-engine/
 machine:
-  node:
-    version: 5.7.0
   environment:
     GCLOUD_PROJECT: kbh-billeder
     GCLOUD_CLUSTER: kbh-billeder-staging-cluster
