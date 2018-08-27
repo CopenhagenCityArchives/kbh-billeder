@@ -1,6 +1,8 @@
 /* global config */
 const config = require('collections-online/lib/config');
 const helpers = require('collections-online/shared/helpers');
+// Remove brackets ({}) from the cumulus key to check the asset has the correct relation (backside).
+const backsideAssetCumulusKey = helpers.getAssetField('backside').cumulusKey.slice(1, -1);
 
 helpers.documentTitle = (metadata, fallback) => {
   let title = metadata.short_title || fallback || 'Billede uden titel';
@@ -22,10 +24,8 @@ helpers.documentLicense = (metadata) => {
 };
 
 helpers.getBacksideAssets = (metadata) => {
-  // Remove brackets ({}) from the cumulus key to check the asset has the correct relation (backside).
-  let cumulusKey = helpers.getAssetField('backside').cumulusKey.slice(1, -1);
   if (metadata.related && metadata.related.assets) {
-    return metadata.related.assets.filter(asset => asset.id).filter(asset => asset.relation === cumulusKey);
+    return metadata.related.assets.filter(asset => asset.id).filter(asset => asset.relation === backsideAssetCumulusKey);
   }
   return [];
 };
@@ -155,6 +155,11 @@ helpers.isDownloadable = (metadata) => {
 helpers.hasBacksideAsset = (metadata) => {
   let backsideAssets = helpers.getBacksideAssets(metadata);
   return backsideAssets.length > 0;
+};
+
+helpers.hasRelations = metadata => {
+  // Filter out backside assets.
+  return metadata.related.assets.filter(asset => asset.relation !== backsideAssetCumulusKey).length > 0;
 };
 
 helpers.isWatermarkRequired = (metadata) => {
