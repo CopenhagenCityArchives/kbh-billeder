@@ -1,10 +1,13 @@
 .slick {
   &-slider {
-    position: static;
+    position: relative;
+  }
+  &-arrow {
+    width: 100%;
+    display: inline-block;
   }
   &-prev {
-    left: -240px;
-    top: 175px;
+    left: -100px;
     background: url(../images/icons/arrow-thin-left.png) no-repeat center;
     &:focus {
       background: url(../images/icons/arrow-thin-left.png) no-repeat center;
@@ -15,10 +18,8 @@
     }
   }
   &-next {
-    position: absolute !important;
     background: url(../images/icons/arrow-thin-right.png) no-repeat center;
-    right: -70px;
-    top: 235px;
+    right: -100px;
     &:focus {
       background: url(../images/icons/arrow-thin-right.png) no-repeat center;
       background-size: 16px;
@@ -28,7 +29,8 @@
     }
   }
   &-next, &-prev {
-    position: relative;
+    position: absolute;
+    top: 165px;
     height: 48px;
     width: 48px;
     border-radius: 48px;
