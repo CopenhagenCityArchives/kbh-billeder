@@ -37,7 +37,7 @@ let config = {
   },
   categoryBlacklist: require('../category-blacklist.js'),
   cip: {
-    baseURL: 'https://www.neaonline.dk:8443/CIP-kbh-billeder',
+    baseURL:  process.env.CUMULUSAPI_URL || 'https://www.neaonline.dk:8443/CIP-kbh-billeder',
     username: process.env.CIP_USERNAME,
     password: process.env.CIP_PASSWORD,
     proxy: {
@@ -53,7 +53,7 @@ let config = {
     },
     catalogs: cipCatalogs,
     client: {
-      endpoint: 'https://www.neaonline.dk:8443/CIP-kbh-billeder/',
+      endpoint: process.env.CUMULUSAPI_URL || 'https://www.neaonline.dk:8443/CIP-kbh-billeder/',
       authMechanism: 'http-basic',
       username: process.env.CIP_USERNAME,
       password: process.env.CIP_PASSWORD,
@@ -107,8 +107,8 @@ let config = {
   },
   facebookAppId: {
     // Found using https://developers.facebook.com/tools/explorer
-    'kbh-arkiv': 159598384220080,
-    'kbh-museum': 116055131754566
+    'kbh-arkiv': process.env.FACEBOOK_APP_ID_KBH_ARKIV || 159598384220080,
+    'kbh-museum': process.env.FACEBOOK_APP_ID_KBH_MUSEUM || 116055131754566
   },
   features: {
     cookieConsent: true,
@@ -189,7 +189,7 @@ let config = {
   watermarks: {
     'kbh-museum': path.join(appDir, 'images', 'watermarks', 'kbh-museum.png'),
     'kbh-arkiv': path.join(appDir, 'images', 'watermarks', 'kbh-arkiv.png'),
-    'frb-arkiv': path.join(appDir, 'images', 'watermarks', 'frb-arkiv.png')    
+    'frb-arkiv': path.join(appDir, 'images', 'watermarks', 'frb-arkiv.png')
   }
 };
 

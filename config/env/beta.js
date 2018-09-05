@@ -6,8 +6,8 @@ var base = require('./base');
 const beta = _.merge({}, base, {
   allowRobots: false,
   auth0: {
-    callbackURL: 'https://beta.kbhbilleder.dk/auth/callback',
-    clientID: 'W6lhfnsLRK3UgBnCAOO3Lmr2lVjd5BDp',
+    callbackURL: process.env.AUTH0_CALLBACK_URL || 'https://beta.kbhbilleder.dk/auth/callback',
+    clientID: process.env.AUTH0_CLIENT_ID || 'W6lhfnsLRK3UgBnCAOO3Lmr2lVjd5BDp',
     // Enable required acceptance of terms and services.
     acceptTermsText: base.auth0TermsText,
   },

@@ -10,7 +10,7 @@
     "prepublish": "gulp build",
     "start:dev:es": "concurrently \"docker-compose up -d mongo\" \"npm run gulp\" \"npm run start:nodemon\" \"kubectl port-forward -n beta elasticsearch-czmt9 9200:9200\"",
     "start:dev": "concurrently \"docker-compose up -d\" \"npm run gulp\" \"npm run start:nodemon\"",
-    "start:nodemon": "NODE_ENV=development nodemon -L -P 5000 --watch . --watch ../collections-online --watch ../collections-online-cumulus server.js",
+    "start:nodemon": "nodemon --watch . --watch ../collections-online --watch ../collections-online-cumulus server.js",
     "start": "node server.js",
     "start:map-integration-docs": "concurrently \"http-server -a localhost -p 8090\" \"opener http://localhost:8090/docs/map-integration/contract/\""
   },
