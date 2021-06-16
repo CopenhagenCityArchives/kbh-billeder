@@ -75,6 +75,21 @@ jobs:
             IMAGE_PATH=eu.gcr.io/${GOOGLE_PROJECT_ID}/frontend:$CIRCLE_BRANCH-$CIRCLE_SHA1-$CIRCLE_BUILD_NUM NAMESPACE=production deployment/set-deployment-image.sh
           fi
 
+  update-kbh-access-key:
+    docker:
+      - image: google/cloud-sdk
+    steps:
+      - run: |
+          echo $GCLOUD_SERVICE_KEY | base64 --decode --ignore-garbage > gcloud-service-key.json
+          set -x
+          gcloud auth activate-service-account --key-file gcloud-service-key.json
+          gcloud --quiet config set project $GOOGLE_PROJECT_ID
+          gcloud --quiet config set compute/zone $GOOGLE_COMPUTE_ZONE
+          gcloud --quiet container clusters get-credentials $GOOGLE_CLUSTER_NAME
+
+          kubectl -n beta set env deployment/cron KBH_ACCESS_KEY=$KBH_ACCESS_KEY
+          kubectl -n production set env deployment/cron KBH_ACCESS_KEY=$KBH_ACCESS_KEY
+
 workflows:
   version: 2
   build:
@@ -84,4 +99,9 @@ workflows:
             branches:
               only:
                 - master
+                - production
+      - update-kbh-access-key:
+          filters:
+            branches:
+              only:
                 - production
